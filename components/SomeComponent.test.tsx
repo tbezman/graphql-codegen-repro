@@ -5,6 +5,7 @@ import { SomeComponent } from "./SomeComponent";
 import nock from "nock";
 import { graphql, useLazyLoadQuery } from "react-relay";
 import { SomeComponentTestQuery } from "../__generated__/SomeComponentTestQuery.graphql";
+import { SomeComponentTestQueryQuery } from "../__generated__/operations";
 
 const Fixture = () => {
   const query = useLazyLoadQuery<SomeComponentTestQuery>(
@@ -21,16 +22,15 @@ const Fixture = () => {
 
 describe("SomeComponent", () => {
   it("can render", async () => {
-    nock("http://localhost:3000")
-      .post("/query")
-      .reply(200, {
-        data: {
-          post: {
-            id: "Some ID",
-            title: "Some Title",
-          },
-        },
-      });
+    const response: SomeComponentTestQueryQuery = {
+      post: {
+        title: "Some Title",
+      },
+    };
+
+    nock("http://localhost:3000").post("/query").reply(200, {
+      data: response,
+    });
 
     const { findByText } = render(
       <RelayProvider>
