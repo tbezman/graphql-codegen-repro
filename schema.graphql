@@ -1,0 +1,17 @@
+interface Node {
+  id: ID!
+}
+
+type Post implements Node {
+  id: ID!
+
+  title: String
+}
+
+type Query {
+  post: Post
+}
+
+schema {
+  query: Query
+}
